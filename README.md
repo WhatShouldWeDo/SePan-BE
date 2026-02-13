@@ -1,2 +1,2 @@
-# SePan_BE
-SePan_BE Repository
+# SePan-BE
+SePan-BE Repository
