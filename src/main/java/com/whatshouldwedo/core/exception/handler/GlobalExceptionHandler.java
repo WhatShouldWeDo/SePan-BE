@@ -118,8 +118,7 @@ public class GlobalExceptionHandler {
     // 서버, DB 예외
     @ExceptionHandler(value = {Exception.class})
     public ResponseDto<?> handleException(Exception e) {
-        log.error("ExceptionHandler catch Exception : {}", e.getMessage());
-        e.printStackTrace();
+        log.error("ExceptionHandler catch Exception : {}", e.getMessage(), e);
         return ResponseDto.fail(new CommonException(ErrorCode.INTERNAL_SERVER_ERROR));
     }
 }

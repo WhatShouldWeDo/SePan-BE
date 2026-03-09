@@ -56,14 +56,27 @@ public enum ErrorCode {
     // External Server Error
     EXTERNAL_SERVER_ERROR(50200, HttpStatus.BAD_GATEWAY, "시스템 에러입니다. \n잠시후 다시 시도해주세요."),
 
-    // ============================================== STOMP ERROR ==============================================
-    // === 400 ====
+    // ============================================== Region ERROR ==============================================
+    NOT_FOUND_SIDO(40410, HttpStatus.NOT_FOUND, "존재하지 않는 시도입니다."),
+    NOT_FOUND_SIGUNGU(40411, HttpStatus.NOT_FOUND, "존재하지 않는 시군구입니다."),
+    NOT_FOUND_HJDONG(40412, HttpStatus.NOT_FOUND, "존재하지 않는 행정동입니다."),
+    NOT_FOUND_HJDONG_VERSION(40413, HttpStatus.NOT_FOUND, "존재하지 않는 행정동 버전입니다."),
+    NOT_FOUND_ACTIVE_HJDONG_VERSION(40414, HttpStatus.NOT_FOUND, "활성화된 행정동 버전이 없습니다."),
+    REGION_SIDO_DUPLICATE(40910, HttpStatus.CONFLICT, "이미 존재하는 시도 코드입니다."),
+    REGION_SIGUNGU_DUPLICATE(40911, HttpStatus.CONFLICT, "이미 존재하는 시군구 코드입니다."),
+    REGION_HJDONG_VERSION_DUPLICATE(40912, HttpStatus.CONFLICT, "이미 존재하는 행정동 버전명입니다."),
 
+    // ============================================== Election ERROR ==============================================
+    NOT_FOUND_ELECTION(40420, HttpStatus.NOT_FOUND, "존재하지 않는 선거입니다."),
+    NOT_FOUND_ELECTORAL_DISTRICT(40421, HttpStatus.NOT_FOUND, "존재하지 않는 선거구입니다."),
 
-    // === 404 ====
+    // ============================================== Statistics ERROR ==============================================
+    NOT_FOUND_STATISTICS_CATEGORY(40430, HttpStatus.NOT_FOUND, "존재하지 않는 통계 카테고리입니다."),
+    NOT_FOUND_STATISTICS_DATASET(40431, HttpStatus.NOT_FOUND, "존재하지 않는 통계 데이터셋입니다."),
 
-    // === 500 ====
-    SYSTEM_ERROR_IN_BIKE_COMMAND(500001, HttpStatus.INTERNAL_SERVER_ERROR, "시스템 에러입니다.\n관리자에게 문의해주세요."),
+    // ============================================== Policy ERROR ==============================================
+    NOT_FOUND_PLEDGE(40440, HttpStatus.NOT_FOUND, "존재하지 않는 공약입니다."),
+    NOT_FOUND_AI_RECOMMENDATION(40441, HttpStatus.NOT_FOUND, "존재하지 않는 AI 추천입니다."),
     ;
 
 

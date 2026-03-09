@@ -110,8 +110,8 @@ public class JsonWebTokenAuthenticationFilter extends OncePerRequestFilter {
             CookieUtil.addSecureCookie(response, cookieDomain, accessTokenCookieName, newAccessToken,
                     (int) (cookieMaxAge / 1000));
 
-            // 인증 설정
-            setAuthentication(request, jsonWebTokenUtil.validateToken(newAccessToken));
+            // 인증 설정 (이미 user를 조회했으므로 직접 전달)
+            setAuthenticationWithUser(request, user);
             log.debug("Access token auto-refreshed for user: {}", accountId);
             return true;
 
@@ -125,27 +125,33 @@ public class JsonWebTokenAuthenticationFilter extends OncePerRequestFilter {
     }
 
     /**
-     * SecurityContext에 인증 정보 설정
+     * SecurityContext에 인증 정보 설정 (Claims에서 userId 추출 후 DB 조회)
      */
     private void setAuthentication(HttpServletRequest request, Claims claims) {
         UUID accountId = UUID.fromString(claims.get(Constants.ACCOUNT_ID_CLAIM_NAME, String.class));
         User user = userRepository.findById(UserId.of(accountId.toString())).orElse(null);
-
         if (user != null) {
-            CustomUserPrincipal principal = CustomUserPrincipal.create(user);
-
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                    principal,
-                    null,
-                    principal.getAuthorities()
-            );
-
-            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-            SecurityContext context = SecurityContextHolder.createEmptyContext();
-            context.setAuthentication(authenticationToken);
-            SecurityContextHolder.setContext(context);
+            setAuthenticationWithUser(request, user);
         }
+    }
+
+    /**
+     * SecurityContext에 인증 정보 설정 (이미 조회된 User 객체 사용)
+     */
+    private void setAuthenticationWithUser(HttpServletRequest request, User user) {
+        CustomUserPrincipal principal = CustomUserPrincipal.create(user);
+
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                principal,
+                null,
+                principal.getAuthorities()
+        );
+
+        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        context.setAuthentication(authenticationToken);
+        SecurityContextHolder.setContext(context);
     }
 
     @Override
